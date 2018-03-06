@@ -1,6 +1,4 @@
-console.log('hello world');
 function handleBeforeRequest(details) {
-  console.log('hiya');
   const {url, tabId} = details;
 
   // -1 indicates a request unrelated to the tab
@@ -16,8 +14,13 @@ function isTracker(url) {
   return url.indexOf('analytics.js') != -1;
 }
 
+// XXX test runner barfs on chrome ...
 chrome.webRequest.onBeforeRequest.addListener(
   handleBeforeRequest,
   {urls: ['<all_urls>']},
   // callback will be syncronous, and can return a blockingResponse
   ['blocking']);
+
+module.exports = {
+  isTracker
+};
