@@ -1,6 +1,6 @@
 module.exports = {
   "env": {
-    "mocha": true,
+    "jest": true,
     "webextensions": true,
     "node": true,
     "browser": true,

@@ -1,4 +1,4 @@
-function handleBeforeRequest(details) {
+export function handleBeforeRequest(details) {
   const {url, tabId} = details;
 
   // -1 indicates a request unrelated to the tab
@@ -9,18 +9,14 @@ function handleBeforeRequest(details) {
   return {cancel: isTracker(url)};
 }
 
-function isTracker(url) {
+export function isTracker(url) {
+  // TODO get a list of trackers ...
   // simple check for google analytics tracker ...
   return url.indexOf('analytics.js') != -1;
 }
 
-// XXX test runner barfs on chrome ...
 chrome.webRequest.onBeforeRequest.addListener(
   handleBeforeRequest,
   {urls: ['<all_urls>']},
   // callback will be syncronous, and can return a blockingResponse
   ['blocking']);
-
-module.exports = {
-  isTracker
-};

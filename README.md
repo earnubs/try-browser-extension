@@ -21,3 +21,9 @@ npm build
 Load unpacked extension from `dist` folder (built with `npm build`), when loaded
 check network tab of any site using Google Analytics and check the `analytics.js`
 file has been blocked.
+
+Tests
+
+```
+npm test -- --watch
+```
