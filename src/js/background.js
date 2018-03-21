@@ -1,3 +1,11 @@
+import * as ABPFilterParser from 'abp-filter-parser';
+
+import easyPrivacy from '../data/easyprivacy.txt';
+
+let parsedFilterData = {};
+
+ABPFilterParser.parse(easyPrivacy, parsedFilterData);
+
 export function handleBeforeRequest(details) {
   const {url, tabId} = details;
 
@@ -10,9 +18,17 @@ export function handleBeforeRequest(details) {
 }
 
 export function isTracker(url) {
-  // TODO get a list of trackers ...
-  // simple check for google analytics tracker ...
-  return url.indexOf('analytics.js') != -1;
+  if (ABPFilterParser.matches(parsedFilterData, url, {
+    domain: window.location.hostname,
+    elementTypeMaskMap: ABPFilterParser.elementTypes.SCRIPT,
+  })) {
+    console.log('You should block this URL!');
+    console.log(url);
+    return true;
+  } else {
+    console.log('You should NOT block this URL!');
+    return false;
+  }
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -20,3 +36,9 @@ chrome.webRequest.onBeforeRequest.addListener(
   {urls: ['<all_urls>']},
   // callback will be syncronous, and can return a blockingResponse
   ['blocking']);
+
+
+// fetch tracker blacklist (alarm to recheck every 30 mins)
+// don't want to DoS easylist
+// count blocked trackers
+// update icon and popup with blocked trackers meta

@@ -22,5 +22,13 @@ module.exports = {
       filename: 'popup.html',
       chunks: ['popup']
     })
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.txt$/,
+        use: 'raw-loader'
+      }
+    ]
+  }
 };
